@@ -1,0 +1,43 @@
+---
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'dbscripts/**'    
+  jobs:
+  terraform:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Terraform
+        uses: hashicorp/setup-terraform@v1
+        with:
+          terraform_version: 1.6.6
+
+      - name: Terraform Init
+        run: terraform init
+
+      - name: Terraform Apply
+        run: terraform apply -auto-approve
+        env:
+          SNOWFLAKE_USERNAME: ${{ secrets.SNOWFLAKE_USERNAME }}
+          SNOWFLAKE_PASSWORD: ${{ secrets.SNOWFLAKE_PASSWORD }}
+          SNOWFLAKE_ACCOUNT: ${{ secrets.SNOWFLAKE_ACCOUNT }}
+          SNOWFLAKE_ROLE: ${{ secrets.SNOWFLAKE_ROLE }}
+          SNOWFLAKE_REGION: ${{ secrets.SNOWFLAKE_REGION }}
+         
+
+      - name: Run SQL script on Snowflake
+        env:
+          SNOWFLAKE_USERNAME: ${{ secrets.SNOWFLAKE_USERNAME }}
+          SNOWFLAKE_PASSWORD: ${{ secrets.SNOWFLAKE_PASSWORD }}
+          SNOWFLAKE_ACCOUNT: ${{ secrets.SNOWFLAKE_ACCOUNT }}
+          SNOWFLAKE_ROLE: ${{ secrets.SNOWFLAKE_ROLE }}
+          SNOWFLAKE_REGION: ${{ secrets.SNOWFLAKE_REGION }}
+        run: |
+          snowsql -a $SNOWFLAKE_ACCOUNT -u $SNOWFLAKE_USERNAME -p $SNOWFLAKE_PASSWORD -r $SNOWFLAKE_ROLE -d MY_DATABASE -s MY_SCHEMA -f create_table.sql
+
