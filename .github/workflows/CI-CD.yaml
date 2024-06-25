@@ -20,6 +20,9 @@ on:
 
       - name: Terraform Init
         run: terraform init
+        
+      - name: Terraform Plan
+        run: terraform plan -auto-approve  
 
       - name: Terraform Apply
         run: terraform apply -auto-approve
@@ -28,7 +31,7 @@ on:
           SNOWFLAKE_PASSWORD: ${{ secrets.SNOWFLAKE_PASSWORD }}
           SNOWFLAKE_ACCOUNT: ${{ secrets.SNOWFLAKE_ACCOUNT }}
           SNOWFLAKE_ROLE: ${{ secrets.SNOWFLAKE_ROLE }}
-          SNOWFLAKE_REGION: ${{ secrets.SNOWFLAKE_REGION }}
+         
          
 
       - name: Run SQL script on Snowflake
@@ -37,7 +40,7 @@ on:
           SNOWFLAKE_PASSWORD: ${{ secrets.SNOWFLAKE_PASSWORD }}
           SNOWFLAKE_ACCOUNT: ${{ secrets.SNOWFLAKE_ACCOUNT }}
           SNOWFLAKE_ROLE: ${{ secrets.SNOWFLAKE_ROLE }}
-          SNOWFLAKE_REGION: ${{ secrets.SNOWFLAKE_REGION }}
+          
         run: |
           snowsql -a $SNOWFLAKE_ACCOUNT -u $SNOWFLAKE_USERNAME -p $SNOWFLAKE_PASSWORD -r $SNOWFLAKE_ROLE -d MY_DATABASE -s MY_SCHEMA -f create_table.sql
 
