@@ -4,10 +4,13 @@ on:
     branches:
       - main
     paths:
-      - 'dbscripts/**'    
-  jobs:
-    name: 'Terraform Apply'
-    runs-on: ubuntu-latest
+      - 'dbscripts/**'
+    pull_request:
+      paths:
+        - 'dbscripts/**
+     jobs:
+    deploy:
+      runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repository
@@ -22,7 +25,7 @@ on:
         run: terraform init
 
       - name: Terraform Plan
-        run: terraform plan -auto-approve  
+        run: terraform plan -auto-approve
 
       - name: Terraform Apply
         run: terraform apply -auto-approve
@@ -31,16 +34,10 @@ on:
           SNOWFLAKE_PASSWORD: ${{ secrets.SNOWFLAKE_PASSWORD }}
           SNOWFLAKE_ACCOUNT: ${{ secrets.SNOWFLAKE_ACCOUNT }}
           SNOWFLAKE_ROLE: ${{ secrets.SNOWFLAKE_ROLE }}
-         
-         
 
       - name: Run SQL script on Snowflake
         env:
           SNOWFLAKE_USERNAME: ${{ secrets.SNOWFLAKE_USERNAME }}
           SNOWFLAKE_PASSWORD: ${{ secrets.SNOWFLAKE_PASSWORD }}
-          SNOWFLAKE_ACCOUNT: ${{ secrets.SNOWFLAKE_ACCOUNT }}
-          SNOWFLAKE_ROLE: ${{ secrets.SNOWFLAKE_ROLE }}
-          
-        run: |
-          snowsql -a $SNOWFLAKE_ACCOUNT -u $SNOWFLAKE_USERNAME -p $SNOWFLAKE_PASSWORD -r $SNOWFLAKE_ROLE -d MY_DATABASE -s MY_SCHEMA -f create_table.sql
-
+          SNOWFLAKE_ACCOUNT: ${{  secrets.SNOWFLAKE_ACCOUNT }}
+          SNOWFLAKE_ROLE   : ${{  secrets.SNOWFLAKE_ROLE }}
