@@ -20,7 +20,7 @@ jobs:
         terraform_version: 1.6.6
 
     - name: Create AWS Credentials directory
-      run: mkdir -p ~/.aws    
+      run: mkdir -p ~/.aws/credentials
 
     - name: Configure AWS Credentials
       env:
