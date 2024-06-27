@@ -1,61 +1,40 @@
+name: CI-CD Terraform Workflow
+
 on:
   push:
     paths:
-      - 'dbscripts/**'
-  pull_request:
-    paths:
-      - 'dbscripts/**'
+      - 'terraform/**'
 
 jobs:
-  deploy:
+  terraform:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-    - name: Setup Terraform
-      uses: hashicorp/setup-terraform@v1
-      with:
-        terraform_version: 1.6.6
+      - name: Set up Terraform
+        uses: hashicorp/setup-terraform@v1
+        with:
+          terraform_version: 1.6.6
 
-    - name: Configure AWS Credentials
-      uses: aws-actions/configure-aws-credentials@v1
-      with:
-        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        aws-region: ap-south-1 # or your desired region
+      - name: Terraform Init
+        run: terraform init
+        working-directory: ./terraform
 
-    - name: Terraform Init
-      run: terraform init
+      - name: Terraform Plan
+        env:
+          SNOWFLAKE_USER: ${{ secrets.SNOWFLAKE_USER }}
+          SNOWFLAKE_PASSWORD: ${{ secrets.SNOWFLAKE_PASSWORD }}
+          SNOWFLAKE_ACCOUNT: ${{ secrets.SNOWFLAKE_ACCOUNT }}
+        run: terraform plan -auto-approve
+        working-directory: ./terraform
 
-    - name: Terraform Plan
-      run: terraform plan
-      env:
-        SNOWFLAKE_USERNAME: ${{ secrets.SNOWFLAKE_USERNAME }}
-        SNOWFLAKE_PASSWORD: ${{ secrets.SNOWFLAKE_PASSWORD }}
-        SNOWFLAKE_ACCOUNT: ${{ secrets.SNOWFLAKE_ACCOUNT }}
-        SNOWFLAKE_REGION: ${{ secrets.SNOWFLAKE_REGION }}
-
-    - name: Terraform Apply
-      run: terraform apply -auto-approve
-      env:
-        SNOWFLAKE_USERNAME: ${{ secrets.SNOWFLAKE_USERNAME }}
-        SNOWFLAKE_PASSWORD: ${{ secrets.SNOWFLAKE_PASSWORD }}
-        SNOWFLAKE_ACCOUNT: ${{ secrets.SNOWFLAKE_ACCOUNT }}
-        SNOWFLAKE_REGION: ${{ secrets.SNOWFLAKE_REGION }}
-
-    - name: Execute SQL Scripts
-      run: |
-        for file in $(ls dbscripts/*.sql); do
-          snowsql -a ${{ secrets.SNOWFLAKE_ACCOUNT }} \
-                  -u ${{ secrets.SNOWFLAKE_USERNAME }} \
-                  -p ${{ secrets.SNOWFLAKE_PASSWORD }} \
-                  -r ${{ secrets.SNOWFLAKE_REGION }} \
-                  -f $file
-        done
-      env:
-        SNOWFLAKE_USERNAME: ${{ secrets.SNOWFLAKE_USERNAME }}
-        SNOWFLAKE_PASSWORD: ${{ secrets.SNOWFLAKE_PASSWORD }}
-        SNOWFLAKE_ACCOUNT: ${{ secrets.SNOWFLAKE_ACCOUNT }}
-        SNOWFLAKE_REGION: ${{ secrets.SNOWFLAKE_REGION }}
+      - name: Terraform Apply
+        if: github.ref == 'refs/heads/main'
+        env:
+          SNOWFLAKE_USER: ${{ secrets.SNOWFLAKE_USER }}
+          SNOWFLAKE_PASSWORD: ${{ secrets.SNOWFLAKE_PASSWORD }}
+          SNOWFLAKE_ACCOUNT: ${{ secrets.SNOWFLAKE_ACCOUNT }}
+        run: terraform apply -auto-approve
+        working-directory: ./terraform
