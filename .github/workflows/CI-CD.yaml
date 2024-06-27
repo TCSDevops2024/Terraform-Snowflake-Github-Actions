@@ -23,8 +23,19 @@ jobs:
       - name: Validate Terraform configuration
         run: terraform validate
 
-      - name: Plan Terraform changes
+      - name: Terraform Plan
+        env:
+          SNOWFLAKE_USER: ${{ secrets.SNOWFLAKE_USER }}
+          SNOWFLAKE_PASSWORD: ${{ secrets.SNOWFLAKE_PASSWORD }}
+          SNOWFLAKE_ACCOUNT: ${{ secrets.SNOWFLAKE_ACCOUNT }}
         run: terraform plan -out=tfplan
+        working-directory: ./terraform
 
       - name: Apply Terraform changes
-        run: terraform apply -out=tfplan
+        env:
+          SNOWFLAKE_USER: ${{ secrets.SNOWFLAKE_USER }}
+          SNOWFLAKE_PASSWORD: ${{ secrets.SNOWFLAKE_PASSWORD }}
+          SNOWFLAKE_ACCOUNT: ${{ secrets.SNOWFLAKE_ACCOUNT }}
+        run: terraform plan -out=tfplan
+        working-directory: ./terraform
+      
