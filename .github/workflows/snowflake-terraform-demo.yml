@@ -1,5 +1,5 @@
-name: Terraform
-
+name: Terraform-GithubActtions-Snowflake-workflow
+---
 on:
   push:
     branches:
@@ -15,6 +15,15 @@ jobs:
 
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v1
+      with:
+          cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+    - name: Set Environment Variables
+      run: |
+        echo "SNOWFLAKE_ACCOUNT=$SNOWFLAKE_ACCOUNT" >> $GITHUB_ENV
+        echo "SNOWFLAKE_USERNAME=$SNOWFLAKE_USERNAME" >> $GITHUB_ENV
+        echo "SNOWFLAKE_PASSWORD=$SNOWFLAKE_PASSWORD" >> $GITHUB_ENV
+        echo "SNOWFLAKE_REGION=$SNOWFLAKE_REGION" >> $GITHUB_ENV
+         
 
     - name: Terraform Format Check
       id: fmt

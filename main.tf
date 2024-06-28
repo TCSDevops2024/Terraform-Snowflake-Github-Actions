@@ -8,6 +8,7 @@ terraform {
 }
 
 
+
 resource "snowflake_database" "POC-DB" {
   name    = "DB_POC_DevOps"
   comment = "Database for Snowflake Terraform demo"
