@@ -9,7 +9,6 @@ terraform {
 provider "snowflake" {
   account = "rp94693.ap-south-1.aws"
   user = "Soumyadip"
-  profile = "SYS_DBA"
 }
 
 resource "snowflake_database" "POC-DB" {
