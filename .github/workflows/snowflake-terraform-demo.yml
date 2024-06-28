@@ -3,38 +3,38 @@ name: "Snowflake Terraform Demo Workflow"
 on:
   push:
     branches:
-      - main
+    - main
 
 jobs:
   snowflake-terraform-demo:
     name: "Snowflake Terraform Demo Job"
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
+    - name: Checkout
+      uses: actions/checkout@v2
 
-      - name: Setup Terraform
-        uses: hashicorp/setup-terraform@v1
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v1
 
-      - name: Terraform Format Check
-        id: fmt
-        run: terraform fmt -check
-        continue-on-error: true
+    - name: Terraform Format Check
+      id: fmt
+      run: terraform fmt -check
+      continue-on-error: true
 
-      - name: Set Formatting Output
-        if: failure()
-        run: |
-         echo "terraform_fmt_check=failed" >> $GITHUB_ENV
-  
+    - name: Set Formatting Output
+      if: failure()
+      run: |
+        echo "terraform_fmt_check=failed" >> $GITHUB_ENV
 
-      - name: Terraform Init
-        id: init
-        run: terraform init
 
-      - name: Terraform Validate
-        id: validate
-        run: terraform validate -no-color
+    - name: Terraform Init
+      id: init
+      run: terraform init
 
-      - name: Terraform Apply
-        if: github.ref == 'refs/heads/main'
-        run: terraform apply -auto-approve
+    - name: Terraform Validate
+      id: validate
+      run: terraform validate -no-color
+
+    - name: Terraform Apply
+      if: github.ref == 'refs/heads/main'
+      run: terraform apply
