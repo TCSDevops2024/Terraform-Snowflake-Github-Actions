@@ -1,14 +1,9 @@
 name: "Snowflake Terraform Demo Workflow"
----
+
 on:
   push:
     branches:
       - main
-paths:
-      - 'dbscripts/**'
-#Allows you to run this workflow manually from the Actions tab
-workflow_dispatch:
-
 jobs:
   snowflake-terraform-demo:
     name: "Snowflake Terraform Demo Job"

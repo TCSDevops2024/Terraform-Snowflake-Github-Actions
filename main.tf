@@ -6,8 +6,12 @@ terraform {
     }
   }
 }
+
 provider "snowflake" {
-  user = var.snowflake_user
-  password = var.snowflake_password
-  account  = var.snowflake_account
+  profile = "SYS_DBA"
+}
+
+resource "snowflake_database" "POC-DB" {
+  name    = "DB_POC_DevOps"
+  comment = "Database for Snowflake Terraform demo"
 }
