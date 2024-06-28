@@ -34,7 +34,10 @@ jobs:
     - name: Terraform Validate
       id: validate
       run: terraform validate -no-color
+    - name: Terraform Plan
+      id: plan
+      run: terraform apply -auto-approve
 
     - name: Terraform Apply
       if: github.ref == 'refs/heads/main'
-      run: terraform apply
+      run: terraform plan -auto-approve
