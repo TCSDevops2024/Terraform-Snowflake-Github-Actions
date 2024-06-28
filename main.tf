@@ -1,3 +1,7 @@
+resource "snowflake_schema" "DEMO-SCHEMA" {
+  database = "DB_POC_DevOps-2024"
+  name = "SCH_POC"
+}
 resource "snowflake_sequence" "DEMO_sequence" {
   database = snowflake_schema.schema.database
   schema   = snowflake_schema.schema.name
