@@ -13,7 +13,7 @@ resource "snowflake_schema" "schema" {
   data_retention_days = 1
 }
 
-resource "snowflake_sequence" "DEMO-sequence" {
+resource "snowflake_sequence" "DEMO_sequence" {
   database = snowflake_schema.schema.database
   schema   = snowflake_schema.schema.name
   name     = "POC-Schema"
@@ -24,7 +24,6 @@ resource "snowflake_table" "DEMO-TABLE" {
   schema                      = snowflake_schema.schema.name
   name                        = "POC_TL"
   comment                     = "Test table."
-  data_retention_time_in_days = snowflake_schema.schema.data_retention_time_in_days
   change_tracking             = false
 
   column {
@@ -33,7 +32,7 @@ resource "snowflake_table" "DEMO-TABLE" {
     nullable = true
 
     default {
-      sequence = snowflake_sequence.sequence.fully_qualified_name
+      sequence = snowflake_sequence.DEMO_sequence.fully_qualified_name
     }
   }
 
