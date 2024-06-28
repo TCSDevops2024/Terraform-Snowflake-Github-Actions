@@ -1,18 +1,3 @@
-resource "snowflake_schema" "DEMO-SCHEMA" {
-  database = "DB_POC_DevOps-2024"
-  name     = "SCH_POC"
-  comment  = "A schema."  
-
-  is_transient        = false
-  is_managed          = false
-  data_retention_days = 1
-}
-resource "snowflake_schema" "schema" {
-  database            = "database"
-  name                = "schema"
-  data_retention_days = 1
-}
-
 resource "snowflake_sequence" "DEMO_sequence" {
   database = snowflake_schema.schema.database
   schema   = snowflake_schema.schema.name
@@ -42,8 +27,9 @@ resource "snowflake_table" "DEMO-TABLE" {
     nullable = true
   }
   column {
-    name     = "CONTACT_NUMBER"
+    name     = "CONTACT_NO"
     type     = "INT"
     nullable = true
   }
+  
 }  
