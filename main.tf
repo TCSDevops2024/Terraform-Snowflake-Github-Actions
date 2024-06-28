@@ -1,7 +1,7 @@
 resource "snowflake_schema" "DEMO-SCHEMA" {
   database = "DB_POC_DevOps-2024"
   name     = "SCH_POC"
-  comment  = "A schema."
+  comment  = "A schema."  
 
   is_transient        = false
   is_managed          = false
