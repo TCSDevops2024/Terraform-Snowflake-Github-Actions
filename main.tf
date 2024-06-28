@@ -6,13 +6,9 @@ terraform {
     }
   }
 }
-provider "snowflake" {
-  profile = "SYS_DBA"
-  account = "rp94693.ap-south-1.aws"
- 
-}
+
 
 resource "snowflake_database" "POC-DB" {
-  name    = "DB_POC_DevOps"
+  name    = "DB_POC_DevOps-2024"
   comment = "Database for Snowflake Terraform demo"
 }
