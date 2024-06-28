@@ -7,9 +7,6 @@ terraform {
   }
 }
 
-provider "snowflake" {
-  profile = "SYS_DBA"
-}
 
 resource "snowflake_database" "POC-DB" {
   name    = "DB_POC_DevOps"
