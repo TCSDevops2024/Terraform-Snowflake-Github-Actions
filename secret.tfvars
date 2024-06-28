@@ -1,2 +1,2 @@
-snowflake_username = "Soumyadip"
-snowflake_password = "Devops@2024"
+snowflake_username = "var.username"
+snowflake_password = "var.password"
