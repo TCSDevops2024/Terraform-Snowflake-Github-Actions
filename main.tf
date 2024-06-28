@@ -7,13 +7,11 @@ terraform {
   }
 }
 provider "snowflake" {
-  account    = "rp94693.ap-south-1.aws" # required if not using profile. Can also be set via SNOWFLAKE_ACCOUNT env var
-  user       = "Soumyadip" # required if not using profile or token. Can also be set via SNOWFLAKE_USER env var
-}
-
-provider "snowflake" {
+  account = "rp94693.ap-south-1.aws"
+  user = "Soumyadip"
   profile = "SYS_DBA"
 }
+
 resource "snowflake_database" "POC-DB" {
   name    = "DB_POC_DevOps-2024"
   comment = "Database for Snowflake Terraform demo"
