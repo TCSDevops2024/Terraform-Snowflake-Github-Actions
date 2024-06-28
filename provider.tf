@@ -9,5 +9,6 @@ terraform {
 provider "snowflake" {
   account = "rp94693.ap-south-1.aws"
   password = "Devops@2024"
+  user = "Soumyadip"
 
 }
