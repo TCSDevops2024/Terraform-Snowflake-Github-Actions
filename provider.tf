@@ -7,8 +7,9 @@ terraform {
   }
 }
 provider "snowflake" {
-  account = "rp94693.ap-south-1.aws"
-  password = "Devops@2024"
-  user = "Soumyadip"
+  account = "var.snowflake_account"
+  password = "var.snowflake_password"
+  user = "var.snowflake_user"
 
 }
+
