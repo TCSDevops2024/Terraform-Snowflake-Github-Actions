@@ -10,3 +10,6 @@ variable "region" {
 variable "password" {
   description = "Snowflake password"
 }
+variable "role" {
+  description = "name of role "
+}
