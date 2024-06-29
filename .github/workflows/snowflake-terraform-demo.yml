@@ -27,11 +27,11 @@ jobs:
 
     - name: Terraform Init
       id: init
-      run: terraform -chdir=./Terraform-Snowflake-Github-Actions init
+      run: terraform init
 
     - name: Terraform Validate
       id: validate
-      run: terraform -chdir=./Terraform-Snowflake-Github-Actions validate
+      run: terraform validate
 
     - name: Terraform Plan
       run: terraform -chdir=./Terraform-Snowflake-Github-Actions plan -out=tfplan -parallelism=20 -var="snowflake_account=${{ secrets.SNOWFLAKE_ACCOUNT }}" -var="snowflake_user=${{ secrets.SNOWFLAKE_USER }}" -var="snowflake_password=${{ secrets.SNOWFLAKE_PASSWORD }}"
