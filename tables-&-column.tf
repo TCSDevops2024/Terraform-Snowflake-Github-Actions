@@ -6,8 +6,8 @@ provider "snowflake" {
 
 resource "snowflake_table" "VEHCILES_TL" {
   name     = "VECHILE_TL"
-  schema   = "SCH-POC-DevOps-2024"
-  database = "DB_POC_DevOps-2024"
+  schema   = "FDB_SCH_Devops_2024"
+  database = "FDB_POC-Devops_2024"
 
   column {
     name = "NAME"
