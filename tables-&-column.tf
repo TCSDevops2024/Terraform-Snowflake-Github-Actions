@@ -4,8 +4,8 @@ provider "snowflake" {
   password = var.snowflake_password
 }
 
-resource "snowflake_table" "VEHCILES_TL" {
-  name     = "VECHILE_TL"
+resource "snowflake_table" "FDB_POC_TL" {
+  name     = "FDB_POC_TL"
   schema   = "FDB_SCH_Devops_2024"
   database = "FDB_POC-Devops_2024"
 
