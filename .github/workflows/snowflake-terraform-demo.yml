@@ -1,4 +1,4 @@
-name: "Snowflake Terraform Demo Workflow"
+name: Snowflake Terraform Demo Workflow
 
 on:
   push:
@@ -7,7 +7,7 @@ on:
 
 jobs:
   snowflake-terraform-demo:
-    name: "Snowflake Terraform Demo Job"
+    name: Snowflake Terraform Demo Job
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
@@ -23,8 +23,7 @@ jobs:
 
     - name: Set Formatting Output
       if: failure()
-      run: |
-        echo "terraform_fmt_check=failed" >> $GITHUB_ENV
+      run: echo "terraform_fmt_check=failed" >> $GITHUB_ENV
 
     - name: Terraform Init
       id: init
@@ -36,8 +35,8 @@ jobs:
 
     - name: Terraform Plan changes
       id: plan
-      run: terraform plan -out=tfplan -parallelism=20 -var="snowflake_account=${{ secrets.SNOWFLAKE_ACCOUNT }}" -var="snowflake_user=${{ secrets.SNOWFLAKE_USER }}" -var="snowflake_password=${{ secrets.SNOWFLAKE_PASSWORD }}"
+      run: terraform plan -out=tfplan -parallelism=20 \ -var="snowflake_account=${{ secrets.SNOWFLAKE_ACCOUNT }}" \ -var="snowflake_user=${{ secrets.SNOWFLAKE_USER }}" \ -var="snowflake_password=${{ secrets.SNOWFLAKE_PASSWORD }}"
 
     - name: Terraform Apply
       if: github.ref == 'refs/heads/main'
-      run: terraform apply -auto-approve
+      run: terraform apply -auto-approve -out=tfplan -parallelism=20 \ -var="snowflake_account=${{ secrets.SNOWFLAKE_ACCOUNT }}" \ -var="snowflake_user=${{ secrets.SNOWFLAKE_USER }}" \ -var="snowflake_password=${{ secrets.SNOWFLAKE_PASSWORD }}"
