@@ -16,7 +16,7 @@ resource "snowflake_schema" "SCH_Devops_2024" {
   comment  = "A schema."
   is_transient        = false
   is_managed          = false
-  data_retention_days = 1
+  data_retention_days = 3
 }
 
 resource "snowflake_table" "FDB_Table" {
@@ -24,7 +24,7 @@ resource "snowflake_table" "FDB_Table" {
   schema                      = snowflake_schema.SCH_Devops_2024.name
   name                        = "FDB_Table"
   comment                     = "A table."
-  data_retention_time_in_days = snowflake_schema.SCH_Devops_2024.data_retention_time_in_days
+  data_retention_time_in_days = 3
   change_tracking             = false
 
   column {
