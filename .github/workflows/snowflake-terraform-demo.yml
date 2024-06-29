@@ -24,9 +24,6 @@ jobs:
     - name: Set Formatting Output
       if: failure()
       run: echo "terraform_fmt_check=failed" >> $GITHUB_ENV
-      # Update to use Environment Files
-      run: |
-        echo "terraform_fmt_check=failed" >> $GITHUB_ENV
 
     - name: Terraform Init
       id: init
