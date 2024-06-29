@@ -3,7 +3,6 @@ provider "snowflake" {
   user = var.snowflake_user
   password = var.snowflake_password
 }
-
 resource "snowflake_table" "FDB_POC_TL" {
   name     = "FDB_POC_TL"
   schema   = "FDB_SCH_Devops_2024"
@@ -26,7 +25,18 @@ resource "snowflake_table" "FDB_POC_TL" {
   column {
     name = "PRICE"
     type = "DECIMAL(10, 2)"
+    
   }
+  #New Columns to be created 
+  
+  column {
+    name = "Distance-covers"
+    type = "DECIMAL(10, 2)"
+    
+  }
+  
 }
+
+
 
 
