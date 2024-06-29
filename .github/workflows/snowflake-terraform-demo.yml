@@ -22,7 +22,7 @@ jobs:
       continue-on-error: true
 
     - name: Set Formatting Output
-      if: steps.fmt.outcome == 'failure'
+      if: failure()
       run: echo "terraform_fmt_check=failed" >> $GITHUB_ENV
 
     - name: Terraform Init
@@ -39,3 +39,5 @@ jobs:
     - name: Terraform Apply
       if: github.ref == 'refs/heads/main'
       run: terraform apply -auto-approve tfplan
+
+
