@@ -38,4 +38,4 @@ jobs:
 
     - name: Terraform Apply
       if: github.ref == 'refs/heads/main'
-      run: terraform -chdir=./Terraform-Snowflake-Github-Actions apply -auto-approve tfplan
+      run: terraform apply -auto-approve tfplan
