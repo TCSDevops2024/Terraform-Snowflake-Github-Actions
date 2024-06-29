@@ -33,7 +33,7 @@ jobs:
 
     - name: Terraform Validate
       id: validate
-      run: terraform validate -no-color
+      run: terraform validate
     - name: Terraform Plan changes
       id: plan
       run: terraform plan -out=tfplan
