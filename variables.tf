@@ -2,7 +2,7 @@ variable "snowflake_account" {
   description = "Name of the Snowflake account"
 }
 
-variable "snowflake_profile" {
+variable "snowflake_user" {
   description = "Name of Snowflake profile"
 }
 
