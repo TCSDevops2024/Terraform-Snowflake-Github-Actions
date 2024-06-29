@@ -1,9 +1,8 @@
 provider "snowflake" {
   account  = var.snowflake_account
-  user = var.snowflake_user
+  username = var.snowflake_user
   password = var.snowflake_password
 }
-
 
 resource "snowflake_table" "POC_TL" {
   name     = "POC_TL"
