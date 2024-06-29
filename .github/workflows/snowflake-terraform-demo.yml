@@ -27,7 +27,7 @@ jobs:
 
     - name: Terraform Init
       id: init
-      run: terraform -chdir=C:\Terraform-Snowflake-Github-Actions init
+      run: terraform init
 
     - name: Terraform Validate
       id: validate
