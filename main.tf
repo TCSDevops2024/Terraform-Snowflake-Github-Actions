@@ -25,7 +25,7 @@ resource "snowflake_table" "VEHCILES_TL" {
   }
   column {
     name = "PRICE"
-    type = "DECIMEL(10, 2)"
+    type = "DECIMAL(10, 2)"
   }
 }
 
