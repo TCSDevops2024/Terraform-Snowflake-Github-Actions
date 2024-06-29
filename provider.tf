@@ -7,9 +7,5 @@ terraform {
   }
 }
 provider "snowflake" {
-  account = "var.snowflake_account"
-  password = "var.snowflake_password"
-  user = "var.snowflake_user"
-
+  profile = "SYS_DBA"
 }
-
