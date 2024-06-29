@@ -4,23 +4,29 @@ provider "snowflake" {
   password = var.snowflake_password
 }
 
-resource "snowflake_table" "POC_TL" {
-  name     = "POC_TL"
-  schema   = "SCH_POC"
+resource "snowflake_table" "VEHCILES_TL" {
+  name     = "VECHILE_TL"
+  schema   = "SCH-POC-DevOps-2024"
   database = "DB_POC_DevOps-2024"
 
   column {
-    name = "First_name"
+    name = "NAME"
     type = "VARCHAR(255)"
   }
 
   column {
-    name = "Last_name"
-    type = "VARCHAR(255)"
+    name = "YOM"
+    type = "INT"
   }
 
   column {
-    name = "Contact_no"
+    name = "Model"
     type = "VARCHAR(20)"
   }
+  column {
+    name = "PRICE"
+    type = "DECIMEL(10, 2)"
+  }
 }
+
+
