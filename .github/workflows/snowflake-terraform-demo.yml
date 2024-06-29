@@ -34,8 +34,9 @@ jobs:
       run: terraform validate
 
     - name: Terraform Plan
-      run: terraform plan -out=tfplan -parallelism=20 \ -var="snowflake_account=***" \ -var="snowflake_user=***" \ -var="snowflake_password=***" \ -chdir C:\Terraform-Snowflake-Github-Actions
+      run: terraform plan -out=tfplan -parallelism=20 -var="snowflake_account=${{ secrets.SNOWFLAKE_ACCOUNT }}" -var="snowflake_user=${{ secrets.SNOWFLAKE_USER }}" -var="snowflake_password=${{ secrets.SNOWFLAKE_PASSWORD }}" -chdir C:\Terraform-Snowflake-Github-Actions
 
     - name: Terraform Apply
+
       if: github.ref == 'refs/heads/main'
-      run: terraform apply -auto-approve -out=tfplan -parallelism=20 \ -var="snowflake_account=${{ secrets.SNOWFLAKE_ACCOUNT }}" \ -var="snowflake_user=${{ secrets.SNOWFLAKE_USER }}" \ -var="snowflake_password=${{ secrets.SNOWFLAKE_PASSWORD }}" \ -chdir C:\Terraform-Snowflake-Github-Actions
+      run: terraform apply -auto-approve -out=tfplan -parallelism=20 -var="snowflake_account=${{ secrets.SNOWFLAKE_ACCOUNT }}" -var="snowflake_user=${{ secrets.SNOWFLAKE_USER }}"  -var="snowflake_password=${{ secrets.SNOWFLAKE_PASSWORD }}" -chdir C:\Terraform-Snowflake-Github-Actions
