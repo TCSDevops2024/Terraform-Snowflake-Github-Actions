@@ -6,6 +6,3 @@ terraform {
     }
   }
 }
-provider "snowflake" {
-  profile = "SYS_DBA"
-}
