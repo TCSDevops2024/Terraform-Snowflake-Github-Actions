@@ -1,6 +1,6 @@
 provider "snowflake" {
   account  = var.snowflake_account
-  profile = var.snowflake_user
+  user = var.snowflake_user
   password = var.snowflake_password
 }
 
