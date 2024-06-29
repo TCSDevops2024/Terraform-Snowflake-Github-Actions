@@ -33,9 +33,8 @@ jobs:
       id: validate
       run: terraform validate
 
-    - name: Terraform Plan changes
-      id: plan
-      run: terraform plan -out=tfplan -parallelism=20 \ -var="snowflake_account=${{ secrets.SNOWFLAKE_ACCOUNT }}" \ -var="snowflake_user=${{ secrets.SNOWFLAKE_USER }}" \ -var="snowflake_password=${{ secrets.SNOWFLAKE_PASSWORD }}" \ -chdir C:\Terraform-Snowflake-Github-Actions
+    - name: Terraform Plan
+      run: terraform plan -out=tfplan -parallelism=20 \ -var="snowflake_account=***" \ -var="snowflake_user=***" \ -var="snowflake_password=***" \ -chdir C:\Terraform-Snowflake-Github-Actions
 
     - name: Terraform Apply
       if: github.ref == 'refs/heads/main'
