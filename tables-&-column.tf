@@ -5,4 +5,3 @@
     comment  = "Description of the new column"
     nullable = true
   }
-}
