@@ -51,16 +51,4 @@ resource "snowflake_table" "FDB_Table" {
     nullable = true
   }
 
-  # New Columns
-  column {
-    name     = "OWNER_LAST_NAME"
-    type     = "VARCHAR(255)"
-    nullable = true
-  }
-
-  column {
-    name     = "OWNER_PINCODE"
-    type     = "NUMBER(38,0)"
-    nullable = true
-  }
 }
