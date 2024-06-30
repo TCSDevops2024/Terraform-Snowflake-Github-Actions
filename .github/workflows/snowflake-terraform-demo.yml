@@ -8,70 +8,30 @@ on:
 jobs:
   snowflake-terraform-demo:
     name: Snowflake Terraform Demo Job
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     steps:
     - name: Checkout
       uses: actions/checkout@v2
 
-    - name: Cache Terraform files
-      uses: actions/cache@v2
-      with:
-        path: |
-          ~/.terraform.d/plugin-cache
-          .terraform
-        key: ${{ runner.os }}-terraform-${{ hashFiles('**/*.tf') }}
-        restore-keys: |
-          ${{ runner.os }}-terraform-
-
     - name: Setup Terraform
-      uses: hashicorp/setup-terraform@v2
-      with:
-        cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+      uses: hashicorp/setup-terraform@v1
+
+    - name: Terraform Format Check
+      id: fmt
+      run: terraform fmt -check
+      continue-on-error: true
+
+    - name: Set Formatting Output
+      if: failure()
+      run: echo "terraform_fmt_check=failed" >> $GITHUB_ENV
 
     - name: Terraform Init
+      id: init
       run: terraform init
 
-    - name: Check if Database Exists
-      id: db-check
-      run: |
-        if terraform state list | grep 'snowflake_database.FDB_Devops_2024'; then
-          echo "Database already exists" > result.txt
-        else
-          echo "Database does not exist" > result.txt
-        fi
-      continue-on-error: true
-
-    - name: Import Snowflake Database
-      if: steps.db-check.outputs.result != 'Database already exists or not "
-      run: terraform import snowflake_database.FDB_Devops_2024 FDB_Devops_2024
-
-    - name: Check if Schema Exists
-      id: schema-check
-      run: |
-        if terraform state list | grep 'snowflake_schema.SCH_Devops_2024'; then
-          echo "Schema already exists" > result.txt
-        else
-          echo "Schema does not exist" > result.txt
-        fi
-      continue-on-error: true
-
-    - name: Import Snowflake Schema
-      if: steps.schema-check.outputs.result != 'Schema already exists'
-      run: terraform import snowflake_schema.SCH_Devops_2024 FDB_Devops_2024.FDB_SCH_Devops_2024
-
-    - name: Check if Table Exists
-      id: table-check
-      run: |
-        if terraform state list | grep 'snowflake_table.FDB_Table'; then
-          echo "Table already exists" > result.txt
-        else
-          echo "Table does not exist" > result.txt
-        fi
-      continue-on-error: true
-
-    - name: Import Snowflake Table
-      if: steps.table-check.outputs.result != 'Table already exists'
-      run: terraform import snowflake_table.FDB_Table FDB_Devops_2024.FDB_SCH_Devops_2024.FDB_Table
+    - name: Terraform Validate
+      id: validate
+      run: terraform validate
 
     - name: Terraform Plan
       run: terraform plan -out=tfplan -parallelism=20 -var="snowflake_account=${{ secrets.SNOWFLAKE_ACCOUNT }}" -var="snowflake_user=${{ secrets.SNOWFLAKE_USER }}" -var="snowflake_password=${{ secrets.SNOWFLAKE_PASSWORD }}"

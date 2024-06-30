@@ -79,6 +79,78 @@ resource "snowflake_table" "Demo-testing-table" {
   }
 }
 
+# Snowflake resource Incremental Data Change:-
+
+resource "snowflake_table_column" "new_columns" {
+  table  = snowflake_table.FDB_Table.name
+  schema = snowflake_schema.SCH_Devops_2024.name
+  database = snowflake_database.FDB_Devops_2024.name
+
+  column {
+    name     = "OWNER_FIRST_NAME"
+    type     = "VARCHAR(255)"
+    nullable = true
+  }
+
+  column {
+    name     = "OWNER_LAST_NAME"
+    type     = "VARCHAR(255)"
+    nullable = true
+  }
+
+  column {
+    name     = "OWNER_PINCODE"
+    type     = "NUMBER(38,0)"
+    nullable = true
+  }
+}
+  
+
+# Terraform-Snowflake-GithubActions new resource creation :-
+
+name: Snowflake Terraform Demo Workflow
+
+on:
+  push:
+    branches:
+    - main
+
+jobs:
+  snowflake-terraform-demo:
+    name: Snowflake Terraform Demo Job
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v1
+
+    - name: Terraform Format Check
+      id: fmt
+      run: terraform fmt -check
+      continue-on-error: true
+
+    - name: Set Formatting Output
+      if: failure()
+      run: echo "terraform_fmt_check=failed" >> $GITHUB_ENV
+
+    - name: Terraform Init
+      id: init
+      run: terraform init
+
+    - name: Terraform Validate
+      id: validate
+      run: terraform validate
+
+    - name: Terraform Plan
+      run: terraform plan -out=tfplan -parallelism=20 -var="snowflake_account=${{ secrets.SNOWFLAKE_ACCOUNT }}" -var="snowflake_user=${{ secrets.SNOWFLAKE_USER }}" -var="snowflake_password=${{ secrets.SNOWFLAKE_PASSWORD }}"
+
+    - name: Terraform Apply
+      if: github.ref == 'refs/heads/main'
+      run: terraform apply -auto-approve tfplan
+
+
 # Terraform-Snowflake-Github-Actions 
 
 Incremental data changes CI-CD yaml script :-
