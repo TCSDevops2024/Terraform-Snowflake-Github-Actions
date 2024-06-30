@@ -46,14 +46,14 @@ resource "snowflake_table" "FDB_Table" {
   }
 
   column {
-    name     = "LAST_NAME"
+    name     = "OWNER_FIRST_NAME"
     type     = "VARCHAR(255)"
     nullable = true
   }
 
   # New Columns
   column {
-    name     = "OWNER_NAME"
+    name     = "OWNER_LAST_NAME"
     type     = "VARCHAR(255)"
     nullable = true
   }
