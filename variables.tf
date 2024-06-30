@@ -3,7 +3,7 @@ variable "snowflake_account" {
 }
 
 variable "snowflake_user" {
-  description = "Name of Snowflake profile"
+  description = "Name of a profile"
 }
 
 variable "snowflake_password" {
