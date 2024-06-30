@@ -276,3 +276,125 @@ jobs:
       run: terraform apply -auto-approve tfplan
 
 
+
+
+============================================================================================================
+
+# Main.tf :-
+
+provider "snowflake" {
+       account  = var.snowflake_account
+       user     = var.snowflake_user
+       password = var.snowflake_password
+     }
+
+     resource "snowflake_database" "FDB_Devops_2024" {
+       name                        = "FDB_Devops_2024"
+       comment                     = "New DB creation"
+       data_retention_time_in_days = 3
+     }
+
+# Schema.tf :-
+resource "snowflake_schema" "SCH_Devops_2024" {
+       database = snowflake_database.FDB_Devops_2024.name
+       name     = "FDB_SCH_Devops_2024"
+       comment  = "A schema."
+       is_transient        = false
+       is_managed          = false
+       data_retention_days = 3
+     }
+
+# table.tf :-
+esource "snowflake_table" "FDB_Table" {
+       database                    = snowflake_database.FDB_Devops_2024.name
+       schema                      = snowflake_schema.SCH_Devops_2024.name
+       name                        = "FDB_Table"
+       comment                     = "A table."
+       data_retention_time_in_days = 3
+       change_tracking             = false
+
+       column {
+         name     = "VEHICLE_NAME"
+         type     = "VARCHAR"
+         nullable = true
+       }
+       column {
+         name     = "VEHICLE_IDENTITY"
+         type     = "NUMBER(38,0)"
+         nullable = true
+       }
+       column {
+         name     = "VEHICLE_MODEL"
+         type     = "VARCHAR"
+         nullable = true
+       }
+       column {
+         name     = "LAST_NAME"
+         type     = "VARCHAR(255)"
+         nullable = true
+       }
+     }
+
+ # Columns.tf :-
+ resource "snowflake_table" "FDB_Table" {
+       database = snowflake_database.FDB_Devops_2024.name
+       schema   = snowflake_schema.SCH_Devops_2024.name
+       name     = "FDB_Table"
+
+       column {
+         name = "OWNER_FIRST_NAME"
+         type = "VARCHAR(255)"
+       }
+
+       column {
+         name = "OWNER_LAST_NAME"
+         type = "VARCHAR(255)"
+       }
+
+       column {
+         name = "OWNER_PINCODE"
+         type = "NUMBER(38,0)"
+       }
+     }
+
+# Updated YAML :-
+name: Snowflake Terraform Demo Workflow
+
+   on:
+     push:
+       branches:
+         - main
+
+   jobs:
+     snowflake-terraform-demo:
+       name: Snowflake Terraform Demo Job
+       runs-on: self-hosted
+       steps:
+         - name: Checkout
+           uses: actions/checkout@v2
+
+         - name: Setup Terraform
+           uses: hashicorp/setup-terraform@v2
+
+         - name: Terraform Init
+           id: init
+           run: terraform init
+
+         - name: Terraform Import
+           run: |
+             terraform import snowflake_database.FDB_Devops_2024 FDB_Devops_2024 || true
+             terraform import snowflake_schema.SCH_Devops_2024 FDB_Devops_2024.FDB_SCH_Devops_2024 || true
+             terraform import snowflake_table.FDB_Table FDB_Devops_2024.FDB_SCH_Devops_2024.FDB_Table || true
+
+         - name: Terraform Validate
+           id: validate
+           run: terraform validate
+
+         - name: Terraform Plan
+           run: terraform plan -out=tfplan -parallelism=20 -var="snowflake_account=${{ secrets.SNOWFLAKE_ACCOUNT }}" -var="snowflake_user=${{ secrets.SNOWFLAKE_USER }}" -var="snowflake_password=${{ secrets.SNOWFLAKE_PASSWORD }}"
+
+         - name: Terraform Apply
+           if: github.ref == 'refs/heads/main'
+           run: terraform apply -auto-approve tfplan
+
+           
