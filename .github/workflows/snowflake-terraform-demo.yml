@@ -42,7 +42,7 @@ jobs:
       continue-on-error: true
 
     - name: Import Snowflake Database
-      if: steps.db-check.outputs.result != 'Database already exists'
+      if: steps.db-check.outputs.result != 'Database already exists or not "
       run: terraform import snowflake_database.FDB_Devops_2024 FDB_Devops_2024
 
     - name: Check if Schema Exists
