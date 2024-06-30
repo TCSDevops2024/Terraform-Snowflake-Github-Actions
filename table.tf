@@ -21,9 +21,5 @@ resource "snowflake_table" "FDB_Table" {
          type     = "VARCHAR"
          nullable = true
        }
-       column {
-         name     = "LAST_NAME"
-         type     = "VARCHAR(255)"
-         nullable = true
-       }
+      
      }
