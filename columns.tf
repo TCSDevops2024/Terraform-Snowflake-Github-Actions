@@ -1,7 +1,7 @@
-resource "snowflake_table_column" "new_columns" {
-  table  = snowflake_table.FDB_Table.name
-  schema = snowflake_schema.SCH_Devops_2024.name
+resource "snowflake_table" "FDB_Table" {
   database = snowflake_database.FDB_Devops_2024.name
+  schema = snowflake_schema.SCH_Devops_2024.name
+  name = "FBD_Table"
 
   column {
     name     = "OWNER_FIRST_NAME"
