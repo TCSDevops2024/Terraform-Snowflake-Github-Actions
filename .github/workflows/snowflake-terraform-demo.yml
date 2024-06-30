@@ -55,7 +55,7 @@ jobs:
           SNOWFLAKE_PASSWORD: ${{ secrets.SNOWFLAKE_PASSWORD }}
 
       - name: Terraform Plan
-        run: terraform plan -out=tfplan -parallelism=20 -var="snowflake_account=${{ secrets.SNOWFLAKE_ACCOUNT }}" -var="snowflake_user=${{ secrets.SNOWFLAKE_USER }}" -var="snowflake_password=${{ secrets.SNOWFLAKE_PASSWORD }}"
+        run: terraform plan -out=tfplan -parallelism=50 -var="snowflake_account=${{ secrets.SNOWFLAKE_ACCOUNT }}" -var="snowflake_user=${{ secrets.SNOWFLAKE_USER }}" -var="snowflake_password=${{ secrets.SNOWFLAKE_PASSWORD }}"
 
       - name: Terraform Apply
         if: github.ref == 'refs/heads/main'
@@ -65,11 +65,4 @@ jobs:
           SNOWFLAKE_USER: ${{ secrets.SNOWFLAKE_USER }}
           SNOWFLAKE_PASSWORD: ${{ secrets.SNOWFLAKE_PASSWORD }}
 
-      - name: Terraform Destroy
-        if: github.event_name == 'workflow_dispatch'
-        run: terraform destroy -auto-approve -var="snowflake_account=${{ secrets.SNOWFLAKE_ACCOUNT }}" -var="snowflake_user=${{ secrets.SNOWFLAKE_USER }}" -var="snowflake_password=${{ secrets.SNOWFLAKE_PASSWORD }}"
-        env:
-          SNOWFLAKE_ACCOUNT: ${{ secrets.SNOWFLAKE_ACCOUNT }}
-          SNOWFLAKE_USER: ${{ secrets.SNOWFLAKE_USER }}
-          SNOWFLAKE_PASSWORD: ${{ secrets.SNOWFLAKE_PASSWORD }}
 
