@@ -305,7 +305,7 @@ resource "snowflake_schema" "SCH_Devops_2024" {
      }
 
 # table.tf :-
-esource "snowflake_table" "FDB_Table" {
+resource "snowflake_table" "FDB_Table" {
        database                    = snowflake_database.FDB_Devops_2024.name
        schema                      = snowflake_schema.SCH_Devops_2024.name
        name                        = "FDB_Table"
@@ -397,4 +397,3 @@ name: Snowflake Terraform Demo Workflow
            if: github.ref == 'refs/heads/main'
            run: terraform apply -auto-approve tfplan
 
-           
