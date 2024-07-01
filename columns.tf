@@ -4,5 +4,5 @@ resource "snowflake_column" "new-demo-column" {
   data_type = "DECIMAL"
   autoincrement = true
   start_value = 1
-  increment_by = 1
+  increment_by = 2
 }
