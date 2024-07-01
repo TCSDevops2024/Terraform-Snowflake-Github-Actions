@@ -2,8 +2,7 @@ on:
      push:
        branches:
          - main
-
-   jobs:
+jobs:
      snowflake-terraform-demo:
        name: Snowflake Terraform Demo Job
        runs-on: self-hosted
