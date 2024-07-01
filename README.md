@@ -399,4 +399,3 @@ name: Snowflake Terraform Demo Workflow
 
 
 
-https://rp94693.ap-south-1.aws.snowflakecomputing.com
