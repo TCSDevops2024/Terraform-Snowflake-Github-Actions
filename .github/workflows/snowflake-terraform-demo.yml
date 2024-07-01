@@ -31,6 +31,10 @@ jobs:
 
     - name: Terraform import
       run: terraform import snowflake_table.FDB_Table 'FDB_Devops_2024|FDB_SCH_Devops_2024 |FDB_Table'
+      env:
+          SNOWFLAKE_ACCOUNT: ${{ secrets.SNOWFLAKE_ACCOUNT }}
+          SNOWFLAKE_USER: ${{ secrets.SNOWFLAKE_USER }}
+          SNOWFLAKE_PASSWORD: ${{ secrets.SNOWFLAKE_PASSWORD }}
 
     - name: Terraform Validate
       id: validate
