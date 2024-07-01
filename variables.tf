@@ -9,3 +9,4 @@ variable "snowflake_user" {
 variable "snowflake_password" {
   description = "Name of Snowflake password"
 }
+
