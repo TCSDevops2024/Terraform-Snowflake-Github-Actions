@@ -397,3 +397,6 @@ name: Snowflake Terraform Demo Workflow
            if: github.ref == 'refs/heads/main'
            run: terraform apply -auto-approve tfplan
 
+
+
+https://rp94693.ap-south-1.aws.snowflakecomputing.com

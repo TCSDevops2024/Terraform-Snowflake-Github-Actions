@@ -2,45 +2,37 @@ name: Snowflake Terraform Demo Workflow
 
 on:
   push:
-    branches:
-    - main
+     branches:
+         - main
 
-jobs:
-  snowflake-terraform-demo:
-    name: Snowflake Terraform Demo Job
-    runs-on: self-hosted
-    steps:
-    - name: Checkout
-      uses: actions/checkout@v2
+  jobs:
+     snowflake-terraform-demo:
+       name: Snowflake Terraform Demo Job
+       runs-on: self-hosted
+       steps:
+         - name: Checkout
+           uses: actions/checkout@v2
 
-    - name: Setup Terraform
-      uses: hashicorp/setup-terraform@v2
+         - name: Setup Terraform
+           uses: hashicorp/setup-terraform@v2
 
-    - name: Terraform Format Check
-      id: fmt
-      run: terraform fmt -check
-      continue-on-error: true
+         - name: Terraform Init
+           id: init
+           run: terraform init
 
-    - name: Set Formatting Output
-      if: failure()
-      run: echo "terraform_fmt_check=failed" >> $GITHUB_ENV
+         - name: Terraform Import
+           run: |
+             terraform import snowflake_database.FDB_Devops_2024 FDB_Devops_2024 || true
+             terraform import snowflake_schema.SCH_Devops_2024 FDB_Devops_2024.FDB_SCH_Devops_2024 || true
+             terraform import snowflake_table.FDB_Table FDB_Devops_2024.FDB_SCH_Devops_2024.FDB_Table || true
 
-    - name: Terraform Init
-      id: init
-      run: terraform init
+         - name: Terraform Validate
+           id: validate
+           run: terraform validate
 
-    - name: Import existing Snowflake database 
-      run: terraform import snowflake_database.FDB_Devops_2024 FDB_Devops_2024
-      continue-on-error: true
+         - name: Terraform Plan
+           run: terraform plan -out=tfplan -parallelism=20 -var="snowflake_account=${{ secrets.SNOWFLAKE_ACCOUNT }}" -var="snowflake_user=${{ secrets.SNOWFLAKE_USER }}" -var="snowflake_password=${{ secrets.SNOWFLAKE_PASSWORD }}"
 
-    - name: Terraform Validate
-      id: validate
-      run: terraform validate
-
-    - name: Terraform Plan
-      run: terraform plan -out=tfplan -parallelism=20 -var="snowflake_account=${{ secrets.SNOWFLAKE_ACCOUNT }}" -var="snowflake_user=${{ secrets.SNOWFLAKE_USER }}" -var="snowflake_password=${{ secrets.SNOWFLAKE_PASSWORD }}"
-
-    - name: Terraform Apply
-      if: github.ref == 'refs/heads/main'
-      run: terraform apply -auto-approve tfplan
-
+         - name: Terraform Apply
+           if: github.ref == 'refs/heads/main'
+           run: terraform apply -auto-approve tfplan
