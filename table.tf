@@ -21,5 +21,9 @@ resource "snowflake_table" "FDB_Table" {
          type     = "VARCHAR"
          nullable = true
        }
-      
-     }
+       column {
+         name     = "DISTANCE-COVERS"
+         type     = "DECIMAL(10 ,2)"
+         nullable = true
+      }
+}      
