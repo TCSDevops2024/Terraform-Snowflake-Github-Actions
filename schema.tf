@@ -4,5 +4,5 @@ resource "snowflake_schema" "SCH_Devops_2024" {
        comment  = "A schema."
        is_transient        = false
        is_managed          = false
-       data_retention_days = 3
+       data_retention_days = 4
      }
