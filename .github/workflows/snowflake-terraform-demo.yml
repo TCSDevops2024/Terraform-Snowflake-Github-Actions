@@ -29,6 +29,10 @@ jobs:
       id: init
       run: terraform init
 
+    - name: Import existing Snowflake database 
+      run: terraform import snowflake_database.FDB_Devops_2024 FDB_Devops_2024
+      continue-on-error: true
+
     - name: Terraform Validate
       id: validate
       run: terraform validate
