@@ -22,10 +22,4 @@ resource "snowflake_table" "FDB_Table" {
          nullable = true
        }
 
-    # New column to be added column 
-    column {
-     name = "DISTANCE_COVERS" 
-     type = "DECIMAL (10 ,8 )"
-     nullable = true
-    }   
-}      
+} 
