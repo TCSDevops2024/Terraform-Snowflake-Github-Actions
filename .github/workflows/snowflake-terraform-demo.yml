@@ -29,6 +29,9 @@ jobs:
       id: init
       run: terraform init
 
+    - name: Terraform import
+      run: terraform import snowflake_table.FDB_Table'FDB_Devops_2024 |FDB_SCH_Devops_2024 |FDB_Table'
+
     - name: Terraform Validate
       id: validate
       run: terraform validate
